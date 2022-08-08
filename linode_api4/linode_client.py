@@ -1115,7 +1115,7 @@ class ObjectStorageGroup(Group):
 
 
 class LinodeClient:
-    def __init__(self, token, base_url="https://api.linode.com/v4", user_agent=None, page_size=None, retry_rate_limit_interval=None):
+    def __init__(self, token, base_url="https://api.linode.com/v4", user_agent=None, page_size=None, retry_rate_limit_interval=None, verify=None):
         """
         The main interface to the Linode API.
 
@@ -1140,11 +1140,15 @@ class LinodeClient:
                                          retried up to 5 times with the given interval,
                                          in seconds, between attempts.
         :type retry_rate_limit_interval: int
+        :param verify: Path on disk to a file containing alternate CA certificates
+        :type verify: str
         """
         self.base_url = base_url
         self._add_user_agent = user_agent
         self.token = token
         self.session = requests.Session()
+        if verify:
+            self.session.verify = verify
         self.page_size = page_size
         self.retry_rate_limit_interval = retry_rate_limit_interval
 
